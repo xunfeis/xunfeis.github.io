@@ -1,2 +1,6 @@
-http://example.com/2025/02/08/hello-world/
-http://example.com/
+https://xunfeis.github.io/2021/10/01/Welcome/
+https://xunfeis.github.io/link/index.html
+https://xunfeis.github.io/about/index.html
+https://xunfeis.github.io/tags/index.html
+https://xunfeis.github.io/categories/index.html
+https://xunfeis.github.io/
