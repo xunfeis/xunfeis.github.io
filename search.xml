@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>博客搭建史</title>
+    <url>/2021/10/01/Welcome/</url>
+    <content><![CDATA[<h2 id="搭建博客"><a href="#搭建博客" class="headerlink" title="搭建博客"></a>搭建博客</h2><p>环境搭建——–&gt;<a href="https://blog.csdn.net/weixin_45019350/article/details/121901433">Hexo-零基础搭建个人博客(详解)_hexo博客-CSDN博客</a></p>
+<p>主题安装——–&gt;<a href="https://butterfly.js.org/">Butterfly - A Simple and Card UI Design theme for Hexo</a></p>
+<h2 id="撰写博客"><a href="#撰写博客" class="headerlink" title="撰写博客"></a>撰写博客</h2><p>参照————–&gt;<a href="https://butterfly.js.org/posts/dc584b87/">Butterfly 文檔(二) 主題頁面 | Butterfly</a></p>
+<h2 id="Bug"><a href="#Bug" class="headerlink" title="Bug"></a>Bug</h2><p>当博客出现npm下载出现如下报错<code>unable to verify the first certificate</code>或者使用npm下载东西无进度时</p>
+<p>取消ssl验证</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm config set strict-ssl false</span><br></pre></td></tr></table></figure>
+
+]]></content>
+  </entry>
+  <entry>
     <title>python分离免杀</title>
     <url>/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/</url>
     <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><table>
@@ -239,17 +251,5 @@
         <tag>python</tag>
         <tag>分离免杀</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>博客搭建史</title>
-    <url>/2021/10/01/Welcome/</url>
-    <content><![CDATA[<h2 id="搭建博客"><a href="#搭建博客" class="headerlink" title="搭建博客"></a>搭建博客</h2><p>环境搭建——–&gt;<a href="https://blog.csdn.net/weixin_45019350/article/details/121901433">Hexo-零基础搭建个人博客(详解)_hexo博客-CSDN博客</a></p>
-<p>主题安装——–&gt;<a href="https://butterfly.js.org/">Butterfly - A Simple and Card UI Design theme for Hexo</a></p>
-<h2 id="撰写博客"><a href="#撰写博客" class="headerlink" title="撰写博客"></a>撰写博客</h2><p>参照————–&gt;<a href="https://butterfly.js.org/posts/dc584b87/">Butterfly 文檔(二) 主題頁面 | Butterfly</a></p>
-<h2 id="Bug"><a href="#Bug" class="headerlink" title="Bug"></a>Bug</h2><p>当博客出现npm下载出现如下报错<code>unable to verify the first certificate</code>或者使用npm下载东西无进度时</p>
-<p>取消ssl验证</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm config set strict-ssl false</span><br></pre></td></tr></table></figure>
-
-]]></content>
   </entry>
 </search>
